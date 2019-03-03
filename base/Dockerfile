@@ -16,9 +16,9 @@ COPY execute-step.sh /
 COPY finish-step.sh /
 
 #COPY bde-spark.css /css/org/apache/spark/ui/static/timeline-view.css
+RUN apk add --no-cache curl bash openjdk8-jre gcc
 
-RUN apk add --no-cache curl bash openjdk8-jre python3 py-pip \
-      && chmod +x *.sh \
+RUN chmod +x *.sh \
       && wget http://apache.mirror.iphh.net/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
       && tar -xvzf spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
       && mv spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} spark \
@@ -27,8 +27,16 @@ RUN apk add --no-cache curl bash openjdk8-jre python3 py-pip \
       #&& jar uf /spark/jars/spark-core_2.11-${SPARK_VERSION}.jar org/apache/spark/ui/static/timeline-view.css \
       && cd /
 
-# Install additional packages
-RUN pip install --upgrade pip && pip install numpy
+
+RUN apk add --no-cache --update python3 py-numpy && \
+    python3 -m ensurepip && \
+    rm -r /usr/lib/python*/ensurepip && \
+    pip3 install --upgrade pip setuptools && \
+    if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \
+    if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
+    rm -r /root/.cache && \
+    rm -rf /var/lib/apt/lists/*
+
 
 #Give permission to execute scripts
 RUN chmod +x /wait-for-step.sh && chmod +x /execute-step.sh && chmod +x /finish-step.sh
