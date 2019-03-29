@@ -29,6 +29,7 @@ RUN chmod +x *.sh \
 
 
 RUN apk add --no-cache --update python3 py-numpy && \
+    apk update && apk add --no-cache libc6-compat \
     python3 -m ensurepip && \
     rm -r /usr/lib/python*/ensurepip && \
     pip3 install --upgrade pip setuptools && \
