@@ -1,4 +1,4 @@
-FROM anostdev/spark-base:2.4.0-hadoop2.7
+FROM anostdev/spark-base:1.0.0-hadoop2.7
 
 MAINTAINER Erika Pauwels <erika.pauwels@tenforce.com>
 MAINTAINER Gezim Sejdiu <g.sejdiu@gmail.com>

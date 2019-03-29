@@ -44,3 +44,6 @@ RUN chmod +x /wait-for-step.sh && chmod +x /execute-step.sh && chmod +x /finish-
 # Fix the value of PYTHONHASHSEED
 # Note: this is needed when you use Python 3.3 or greater
 ENV PYTHONHASHSEED 1
+
+#ENV PYSPARK_SUBMIT_ARGS "--packages datastax:spark-cassandra-connector:2.4.1-s_2.11"
+ENV PYSPARK_SUBMIT_ARGS "--conf spark.cassandra.connection.host=cassandra --packages datastax:spark-cassandra-connector:2.4.1-s_2.11"
